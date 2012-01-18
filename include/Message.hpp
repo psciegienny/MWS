@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 #include <boost/asio.hpp>
 /**
 * @details Klasa odpowiedzialna za poprawne informacje o wiadomości
@@ -22,11 +23,18 @@ public:
   ///@details Konstruktor domyślny - inicjalizuje długość wiadomości 
   Message(): _body_length(0){
   }
-  Message(const Message& src){
+    Message(const Message& src){
+    std::cout << "Konstruktor kopiujacy Message'a" << std::endl;
     std::memcpy(_data, src.data(), src.length());
     _src=src.source();
     _body_length=src.body_length();
     
+  }
+  void operator=(const Message& src){
+    std::cout << "operator=" << std::endl;
+    std::memcpy(_data, src.data(), src.length());
+    _src=src.source();
+    _body_length=src.body_length();
   }
   ///@brief metoda zwracająca treść wiadomości razem z nagłówkiem
   const char* data() const {

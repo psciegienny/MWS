@@ -1,0 +1,6 @@
+SOURCE = Room.cpp Server.cpp Session.cpp
+
+OBJ= $(SOURCE:.cpp=.o)
+
+main: ${SRC}/main.czaju.client.cpp  ${INCLUDE}/Client.hpp
+	${CXX} $^ -o ${TMP}/main.czaju.client ${LDFLAGS} ${CXXFLAGS}

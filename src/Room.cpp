@@ -11,13 +11,15 @@
         _participants.erase(participant);
   }
   void Room::todo(const Message msg){
-      std::cout << "pushbackuje message";
+      std::cout << "pushbackuje message od: " << msg.source() << std::endl;
       _todo.push_back(msg);
   }
   Message Room::todo(){
+     std::cerr << "W room, todo size: " << _todo.size() << std::endl;
      while(true){
+        std::cerr << " W petli, w room";
      if(!_todo.empty()){
-        Message msg=_todo.front();
+       Message msg = _todo.front();
         _todo.pop_front();
         return msg;
         }
@@ -42,3 +44,8 @@
     std::for_each(_participants.begin(), _participants.end(),
         boost::bind(&Participant::deliver, _1, boost::ref(msg)));
   }
+  void Room::deliver(unsigned who, const Message& msg){
+      std::cerr << "jestem w Room::deliver";
+      search(who)->deliver(msg);
+  }
+

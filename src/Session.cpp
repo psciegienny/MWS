@@ -32,7 +32,7 @@
 //      _read_msg.source((void*) &_socket);
       _read_msg.source(_room.search(this));
       _room.todo(_read_msg);
-      _room.deliver(_read_msg);
+//      _room.deliver(_read_msg);
       boost::asio::async_read(_socket, boost::asio::buffer(_read_msg.data(), Message::header_length),
           boost::bind(&Session::handle_read_header, shared_from_this(), boost::asio::placeholders::error));
     }

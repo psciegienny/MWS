@@ -15,15 +15,18 @@ public:
   }
 
   void handle_accept(Session_ptr session, const boost::system::error_code& error);
-  void send(const std::string& m){
+  void send(unsigned who, const std::string& m){
+      std::cerr << "Senduje do" << who << std::endl;
       Message msg;
       msg.body_length(strlen(m.c_str()));
       memcpy(msg.body(), m.c_str(), msg.body_length());
       msg.encode_header();
-      _room.deliver(msg);      
+      _room.deliver(who, msg);      
   }
-  Message& receive(){
-         _room.todo();
+  const Message receive(){
+         const Message& tmp = _room.todo();
+         std::cout << "Przy wyciaganiu poziom wyzej: "<< tmp.source() << std::endl;
+         return tmp;
      }
 private:
   boost::asio::io_service& _io_service;
