@@ -19,15 +19,15 @@ class CalkujKwadratoweExecutor: public Executor{
           tmp >> A;
           tmp >> B;
           tmp >> C;
-          double width = (b-a)/1000;
+          double width = (b-a)/100000;
           double f1, f2;
           double wynik = 0;
-          for(int i=0; i<1000; ++i){
+          for(int i=0; i<100000; ++i){
              f1=A*(a+i*width)*(a+i*width)+B*(a+i*width)+C;
              f2=A*(a+(i+1)*width)*(a+(i+1)*width)+B*(a+(i+1)*width)+C;
              wynik+=width*(f1+f2)/2;
           }
-          res << wynik;
+          res << "calkujKwadratowe" << s << ": "<< wynik;
           return res.str(); 
      }
 };
