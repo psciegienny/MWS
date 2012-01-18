@@ -1,0 +1,15 @@
+SOURCE = Room.cpp Server.cpp Session.cpp
+
+OBJ= $(SOURCE:.cpp=.o)
+
+main: ${SRC}/main.czaju.cpp  ${BIN}/Room.o ${BIN}/Server.o ${BIN}/Session.o
+	${CXX} $^ -o ${TMP}/main.czaju ${LDFLAGS} ${CXXFLAGS}
+
+${BIN}/Room.o : ${SRC}/Room.cpp ${INCLUDE}/Room.hpp
+	${CXX} ${SRC}/Room.cpp -c -o $@ ${CXXFLAGS}
+
+${BIN}/Server.o : ${SRC}/Server.cpp ${INCLUDE}/Server.hpp
+	${CXX} ${SRC}/Server.cpp -c -o $@ ${CXXFLAGS}
+
+${BIN}/Session.o : ${SRC}/Session.cpp ${INCLUDE}/Session.hpp
+	${CXX} ${SRC}/Session.cpp -c -o $@ ${CXXFLAGS}
