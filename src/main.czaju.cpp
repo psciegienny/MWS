@@ -4,6 +4,7 @@
 #include "Session.hpp"
 #include "Server.hpp"
 #include "Client.hpp"
+#include "Worker.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -23,9 +24,12 @@ try
     tcp::endpoint endpoint(tcp::v4(), port);
     s = new Server(io_service_server, endpoint); 
     boost::thread server_t(boost::bind(&boost::asio::io_service::run, &io_service_server));
+    Worker w;
     while(true){
          Message msg = s->receive();
-         s->send(msg.source(),"I ACCEPT CHALLANGE");
+         s->send(msg.source(),"challenge accepted");
+//         std::cout << msg.getString();
+         s->send(msg.source(),w.execute(msg.body()));
     }
     server_t.join();
 

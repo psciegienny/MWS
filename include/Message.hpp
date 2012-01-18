@@ -22,6 +22,7 @@ public:
   ///@brief Konstruktor
   ///@details Konstruktor domyślny - inicjalizuje długość wiadomości 
   Message(): _body_length(0){
+      std::memset((void*)_data,0, max_body_length+header_length);
   }
     Message(const Message& src){
     std::cout << "Konstruktor kopiujacy Message'a" << std::endl;
@@ -91,6 +92,10 @@ public:
   }
   unsigned source() const{
       return _src;
+  }
+  std::string getString(){
+      std::string s(body());
+      return s;
   }
 
 private:
