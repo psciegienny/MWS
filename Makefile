@@ -1,4 +1,4 @@
-LDFLAGS= -lboost_filesystem -lboost_thread
+LDFLAGS= -lboost_filesystem -lboost_thread -lm
 CXX=g++
 BASE=${CURDIR}
 SRC=${BASE}/src
