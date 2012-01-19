@@ -19,7 +19,7 @@ if (argc < 3){
     host="localhost";
     port="1234";
 }
-      Client* c = Client::getInstance(io_service_client, host, port);
+      Client* c = Client::getInstance(host, port);
 //    Client c(io_service_client, host.c_str(), port.c_str());
     boost::thread client_t(boost::bind(&boost::asio::io_service::run, &io_service_client)); 
 

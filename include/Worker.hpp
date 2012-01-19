@@ -1,7 +1,10 @@
 /// Zaczynam pracować społecznie, pozdrawiam Paweł Ściegienny
+#ifndef WORKER_HPP
+#define WORKER_HPP
 #include <iostream>
 #include <string>
 #include <sstream>
+
 class Executor{
   public:
       virtual std::string exec(std::string s)=0;
@@ -46,10 +49,8 @@ class Worker{
            std::string tmp = s.substr(0, terminator);
            if(tmp=="calkujKwadratowe")
                _executor= new CalkujKwadratoweExecutor();
-           else if(tmp=="list")
-               _executor = new ListExecutor();
            else
-               return "I can't";
+               _executor = new ListExecutor();
            std::string params = s.substr(terminator+1);
            return _executor->exec(params);
       }
@@ -57,4 +58,4 @@ class Worker{
       Executor* _executor;
 };
 
-
+#endif //WORKER_HPP

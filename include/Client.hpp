@@ -7,11 +7,36 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include "Message.hpp"
-
+#include "Worker.hpp"
 
 using boost::asio::ip::tcp;
 
 typedef std::deque<Message> Message_queue;
+
+class SocketSingleton{
+   public:
+   static boost::asio::io_service* get(){
+      if(!is){ 
+          _io_service=new boost::asio::io_service;
+          is=true;
+          std::cout << "tworze watek" << std::endl;
+          _t = new boost::thread(boost::bind(&boost::asio::io_service::run, _io_service));
+      }
+      return _io_service;
+   }
+   static void join(){
+       _t->join();
+       delete _t;
+   }
+   private:
+   static bool is;
+   static boost::asio::io_service* _io_service;
+   static boost::thread* _t;
+};
+
+boost::asio::io_service* SocketSingleton::_io_service;
+boost::thread* SocketSingleton::_t;
+bool SocketSingleton::is=false;
 
 /**
 * @details Klasa odpowiedzialna za obsługę połączenia z serwerem
@@ -44,7 +69,9 @@ private:
     tcp::endpoint endpoint = *iterator;
     _socket.async_connect(endpoint, boost::bind(&Client::handle_connect, this, boost::asio::placeholders::error, ++iterator));
   }
-
+  ~Client(){
+     SocketSingleton::join();
+  }
   ///@brief metoda wysyłająca wiadomość
   ///@details metoda bindująca handler do_writer z metodą post socketu
   void write(const Message& msg){
@@ -151,9 +178,9 @@ private:
   Message _read_msg;
   Message_queue _write_msgs;
 public:
-  static Client* getInstance(boost::asio::io_service& socket, std::string host="localhost", std::string port="1234"){
+  static Client* getInstance(std::string host="localhost", std::string port="1234"){
       if(!is){
-          _instance=new Client(socket, host.c_str(), port.c_str());
+          _instance=new Client(*SocketSingleton::get(), host.c_str(), port.c_str());
           is=true;
       }
       return _instance;
