@@ -36,7 +36,7 @@ try
 		 w.setExecutor(currentExecutor);
 		 std::string params = body.substr(terminator+1);
 //         std::cout << msg.getString();
-         s->send(msg.source(),w.execute(params));
+         s->send(msg.source(),w.execute(body, params));
     }
     server_t.join();
 
