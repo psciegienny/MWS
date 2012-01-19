@@ -25,11 +25,18 @@ try
     s = new Server(io_service_server, endpoint); 
     boost::thread server_t(boost::bind(&boost::asio::io_service::run, &io_service_server));
     Worker w;
+	Executor* currentExecutor;
     while(true){
          Message msg = s->receive();
          s->send(msg.source(),"challenge accepted");
+		 std::string body = msg.body();
+		 size_t terminator = body.find(" ");
+         std::string tmp = body.substr(0, terminator);
+		 CalkujWielomianExecutor::obsluz(tmp, &currentExecutor);
+		 w.setExecutor(currentExecutor);
+		 std::string params = body.substr(terminator+1);
 //         std::cout << msg.getString();
-         s->send(msg.source(),w.execute(msg.body()));
+         s->send(msg.source(),w.execute(params));
     }
     server_t.join();
 

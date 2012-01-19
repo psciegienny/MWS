@@ -17,7 +17,11 @@ class ListExecutor: public Executor{
         return list;
     }
 };
+
+class CalkujWielomianExecutor;
+
 class CalkujKwadratoweExecutor: public Executor{
+	friend class CalkujWielomianExecutor;
   public:
      virtual std::string exec(std::string s){
           double a, b;
@@ -39,7 +43,14 @@ class CalkujKwadratoweExecutor: public Executor{
           }
           res << "calkujKwadratowe " << s << ": "<< wynik;
           return res.str(); 
-     }
+     }  
+	private:
+		static void obsluz(const std::string& polecenie, Executor** wykonawca) {
+			if(polecenie == "calkujKwadratowe")
+				*wykonawca = new CalkujKwadratoweExecutor();
+			else
+				*wykonawca = new ListExecutor();
+		}
 };
 class CalkujWielomianExecutor: public Executor{
   public:
@@ -72,22 +83,24 @@ class CalkujWielomianExecutor: public Executor{
           res << "calkujWielomian " << s << ": "<< wynik;
           return res.str(); 
      }
+     static void obsluz(const std::string& polecenie, Executor** wykonawca) {
+		 if(polecenie == "calkujWielomian")
+			 *wykonawca = new CalkujWielomianExecutor();
+		 else
+			 CalkujKwadratoweExecutor::obsluz(polecenie, wykonawca);
+	 }
 };
 class Worker{
+	
   public:
       std::string execute(std::string s){
            std::cout << "EXECUTUJE: "<< s << std::endl;
-           size_t terminator = s.find(" ");
-           std::string tmp = s.substr(0, terminator);
-           if(tmp=="calkujKwadratowe")
-               _executor= new CalkujKwadratoweExecutor();
-           else if (tmp=="calkujWielomian")
-               _executor= new CalkujWielomianExecutor();
-           else
-               _executor = new ListExecutor();
-           std::string params = s.substr(terminator+1);
-           return _executor->exec(params);
+           return _executor->exec(s);
       }
+      void setExecutor(Executor* nowy) {
+		  delete _executor;
+		  _executor = nowy;
+	  }
    private:
       Executor* _executor;
 };
