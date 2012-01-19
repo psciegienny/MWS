@@ -17,5 +17,7 @@ export INCLUDE
 
 czaju:
 	${MAKE} -f src/Makefile.czaju
+czaju_worker2:
+	${MAKE} -f src/Makefile.czaju.worker2
 czaju_client:
 	${MAKE} -f src/Makefile.czaju.client

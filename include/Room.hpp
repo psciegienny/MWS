@@ -26,8 +26,6 @@ public:
       for(int i=0; i< _idents.size(); ++i){
           if(_idents[i].second==ident)
               return _idents[i].first;
-          else
-             std::cerr<< _idents[i].second << " to nie " << ident << std::endl;
          }
          ///jak juz cos to zwrocmy pierwszego
           return _idents[0].first;

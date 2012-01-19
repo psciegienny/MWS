@@ -18,23 +18,24 @@ class SocketSingleton{
       if(!is){ 
           _io_service=new boost::asio::io_service;
           is=true;
-          std::cout << "tworze watek" << std::endl;
-          _t = new boost::thread(boost::bind(&boost::asio::io_service::run, _io_service));
+//          std::cout << "tworze watek" << std::endl;
+//          _t = new boost::thread(boost::bind(&boost::asio::io_service::run, _io_service));
       }
       return _io_service;
    }
-   static void join(){
+ /*  static void join(){
        _t->join();
        delete _t;
    }
+*/
    private:
    static bool is;
    static boost::asio::io_service* _io_service;
-   static boost::thread* _t;
+  // static boost::thread* _t;
 };
 
 boost::asio::io_service* SocketSingleton::_io_service;
-boost::thread* SocketSingleton::_t;
+//boost::thread* SocketSingleton::_t;
 bool SocketSingleton::is=false;
 
 /**
@@ -67,9 +68,11 @@ private:
     tcp::resolver::iterator iterator = resolver.resolve(query);
     tcp::endpoint endpoint = *iterator;
     _socket.async_connect(endpoint, boost::bind(&Client::handle_connect, this, boost::asio::placeholders::error, ++iterator));
+    _t = new boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
   }
   ~Client(){
-     SocketSingleton::join();
+     _t->join();
+     delete _t;
   }
   ///@brief metoda wysyłająca wiadomość
   ///@details metoda bindująca handler do_writer z metodą post socketu
@@ -176,6 +179,7 @@ private:
   tcp::socket _socket;
   Message _read_msg;
   Message_queue _write_msgs;
+  boost::thread* _t;
 public:
   static Client* getInstance(std::string host="localhost", std::string port="1234"){
       if(!is){
