@@ -18,6 +18,10 @@ if (argc < 3){
     host="localhost";
     port="1234";
 }
+else{
+   host=argv[1];
+   port=argv[2];
+}
       Client* c = Client::getInstance(host, port);
 
     char line[Message::max_body_length + 1];
