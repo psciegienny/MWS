@@ -7,7 +7,6 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include "Message.hpp"
-#include "Worker.hpp"
 
 using boost::asio::ip::tcp;
 
