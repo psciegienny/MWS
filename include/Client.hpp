@@ -20,7 +20,7 @@ typedef std::deque<Message> Message_queue;
 */
 
 class Client{
-public:
+private:
   ///@brief Konstruktor połączenia
   ///@defails Konstruktor. Ustawia handler połączenia.
   ///@param[in] io_service referencja do obiektu boost::asio:io_service reprezentującego swego rodzaju socket
@@ -50,6 +50,7 @@ public:
   void write(const Message& msg){
     _io_service.post(boost::bind(&Client::do_write, this, msg));
   }
+public:
   ///@brief metoda zamykająca połączenie
   ///@detail metoda binduje handler do_close z metodą post socketu
   void close(){
@@ -145,13 +146,24 @@ private:
     _socket.close();
   }
 
-private:
   boost::asio::io_service& _io_service;
   tcp::socket _socket;
   Message _read_msg;
   Message_queue _write_msgs;
+public:
+  static Client* getInstance(boost::asio::io_service& socket, std::string host="localhost", std::string port="1234"){
+      if(!is){
+          _instance=new Client(socket, host.c_str(), port.c_str());
+          is=true;
+      }
+      return _instance;
+  }
+  private:
+  static Client* _instance;
+  static bool is;
 };
 
-
+bool Client::is= false;
+Client* Client::_instance;
 
 #endif //CLIENT_HPP

@@ -6,7 +6,13 @@ class Executor{
   public:
       virtual std::string exec(std::string s)=0;
 };
-
+class ListExecutor: public Executor{
+ public:
+    virtual std::string exec(std::string s){
+        std::string list = "calkujKwadratowe <a> <b> <A> <B> <C>";
+        return list;
+    }
+};
 class CalkujKwadratoweExecutor: public Executor{
   public:
      virtual std::string exec(std::string s){
@@ -27,7 +33,7 @@ class CalkujKwadratoweExecutor: public Executor{
              f2=A*(a+(i+1)*width)*(a+(i+1)*width)+B*(a+(i+1)*width)+C;
              wynik+=width*(f1+f2)/2;
           }
-          res << "calkujKwadratowe" << s << ": "<< wynik;
+          res << "calkujKwadratowe " << s << ": "<< wynik;
           return res.str(); 
      }
 };
@@ -38,9 +44,12 @@ class Worker{
            std::cout << "EXECUTUJE: "<< s << std::endl;
            size_t terminator = s.find(" ");
            std::string tmp = s.substr(0, terminator);
-           if(tmp=="calkujKwadratowe"){
+           if(tmp=="calkujKwadratowe")
                _executor= new CalkujKwadratoweExecutor();
-           }
+           else if(tmp=="list")
+               _executor = new ListExecutor();
+           else
+               return "I can't";
            std::string params = s.substr(terminator+1);
            return _executor->exec(params);
       }

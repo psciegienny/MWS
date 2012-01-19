@@ -15,9 +15,7 @@
       _todo.push_back(msg);
   }
   Message Room::todo(){
-     std::cerr << "W room, todo size: " << _todo.size() << std::endl;
      while(true){
-        std::cerr << " W petli, w room";
      if(!_todo.empty()){
        Message msg = _todo.front();
         _todo.pop_front();
@@ -45,7 +43,6 @@
         boost::bind(&Participant::deliver, _1, boost::ref(msg)));
   }
   void Room::deliver(unsigned who, const Message& msg){
-      std::cerr << "jestem w Room::deliver";
       search(who)->deliver(msg);
   }
 

@@ -19,18 +19,18 @@ if (argc < 3){
     host="localhost";
     port="1234";
 }
-
-    Client c(io_service_client, host.c_str(), port.c_str());
+      Client* c = Client::getInstance(io_service_client, host, port);
+//    Client c(io_service_client, host.c_str(), port.c_str());
     boost::thread client_t(boost::bind(&boost::asio::io_service::run, &io_service_client)); 
 
 
     char line[Message::max_body_length + 1];
     while (std::cin.getline(line, Message::max_body_length + 1))
     {
-        c.send(line);
+        c->send(line);
     }
     
-    c.close();
+    c->close();
     client_t.join();
 
 

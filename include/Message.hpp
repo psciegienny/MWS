@@ -25,7 +25,8 @@ public:
       std::memset((void*)_data,0, max_body_length+header_length);
   }
     Message(const Message& src){
-    std::cout << "Konstruktor kopiujacy Message'a" << std::endl;
+    std::memset((void*)_data,0, max_body_length+header_length);
+//    std::cout << "Konstruktor kopiujacy Message'a" << std::endl;
     std::memcpy(_data, src.data(), src.length());
     _src=src.source();
     _body_length=src.body_length();
