@@ -93,12 +93,14 @@ class CalkujWielomianExecutor: public Executor{
 class Worker{
 	
   public:
+	  Worker() {_executor = NULL;}
       std::string execute(std::string s, std::string params){
            std::cout << "EXECUTUJE: "<< s << std::endl;
            return _executor->exec(params);
       }
       void setExecutor(Executor* nowy) {
-		  delete _executor;
+		  if (_executor != NULL)
+			  delete _executor;
 		  _executor = nowy;
 	  }
    private:
