@@ -1,8 +1,8 @@
-SOURCE = Room.cpp Server.cpp Session.cpp
+SOURCE = Room.cpp Server.cpp Session.cpp Message.cpp Worker.cpp Executor.cpp
 
 OBJ= $(SOURCE:.cpp=.o)
 
-main: ${SRC}/main.czaju.cpp  ${BIN}/Room.o ${BIN}/Server.o ${BIN}/Session.o
+main: ${SRC}/main.czaju.cpp  ${BIN}/Room.o ${BIN}/Server.o ${BIN}/Session.o ${BIN}/Message.o ${BIN}/Worker.o ${BIN}/Executor.o
 	${CXX} $^ -o ${TMP}/main.czaju ${LDFLAGS} ${CXXFLAGS}
 
 ${BIN}/Room.o : ${SRC}/Room.cpp ${INCLUDE}/Room.hpp
@@ -13,3 +13,12 @@ ${BIN}/Server.o : ${SRC}/Server.cpp ${INCLUDE}/Server.hpp
 
 ${BIN}/Session.o : ${SRC}/Session.cpp ${INCLUDE}/Session.hpp
 	${CXX} ${SRC}/Session.cpp -c -o $@ ${CXXFLAGS}
+
+${BIN}/Message.o : ${SRC}/Message.cpp ${INCLUDE}/Message.hpp
+	${CXX} ${SRC}/Message.cpp -c -o $@ ${CXXFLAGS}
+
+${BIN}/Worker.o : ${SRC}/Worker.cpp ${INCLUDE}/Worker.hpp
+	${CXX} ${SRC}/Worker.cpp -c -o $@ ${CXXFLAGS}
+
+${BIN}/Executor.o : ${SRC}/Executor.cpp ${INCLUDE}/Executor.hpp
+	${CXX} ${SRC}/Executor.cpp -c -o $@ ${CXXFLAGS}
