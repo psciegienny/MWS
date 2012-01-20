@@ -8,6 +8,7 @@
 #include <boost/thread.hpp>
 #include "Message.hpp"
 #include "SocketSingleton.hpp"
+#include "mainwindow.h"
 using boost::asio::ip::tcp;
 
 typedef std::deque<Message> Message_queue;
@@ -20,6 +21,9 @@ typedef std::deque<Message> Message_queue;
 
 class Client{
 public:
+    void setWindow(MainWindow* w){
+        _window=w;
+    }
   static Client* getInstance(std::string host="localhost", std::string port="1234"){
       if(!is){
           _instance=new Client(*SocketSingleton::get(), host.c_str(), port.c_str());
@@ -104,9 +108,8 @@ private:
   ///@brief handler sczytujący treść
   void handle_read_body(const boost::system::error_code& error){
     if (!error){
-      //LET'S DO STH WITH MESSAGE WHICH INCOMED
-
-      // odpalenie metody rysującej?
+      
+      _window->receiveMessage(std::string(_read_msg.body()));
 
       std::cout.write(_read_msg.body(), _read_msg.body_length());
       std::cout << "\n";
@@ -164,6 +167,7 @@ private:
   boost::thread* _t;
   static Client* _instance;
   static bool is;
+  MainWindow* _window;
 };
 
 bool Client::is= false;
