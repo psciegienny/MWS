@@ -14,12 +14,10 @@
 #include <string>
 #include <sstream>
 
-//#include "../include/Participant.hpp"
-//#include "../include/Room.hpp"
-//#include "../include/Message.hpp"
-//#include "../include/Session.hpp"
-//#include "../include/Server.hpp"
-//#include "../include/Client.hpp"
+
+#include "Client.hpp"
+
+class Client;
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +25,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = 0);
+    void receiveMessage(const std::string);
     ~MainWindow();
 
 public slots:
@@ -34,6 +33,7 @@ public slots:
 private:
     //GUI
     void CreateGUI();
+    void talkToServer();
     QWidget *connectWidget;
     QWidget *optionsWidget;
     QTextEdit *outText;
@@ -42,7 +42,7 @@ private:
     QLineEdit *hostEdit;
     bool connected;
     /////////////////
-    //Client* c;
+    Client* c;
 };
 
 

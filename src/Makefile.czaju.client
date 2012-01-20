@@ -1,4 +1,4 @@
-SOURCE = Room.cpp Server.cpp Session.cpp Message.cpp
+SOURCE = Room.cpp Server.cpp Session.cpp Message.cpp Client.cpp
 
 OBJ= $(SOURCE:.cpp=.o)
 

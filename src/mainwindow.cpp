@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     CreateGUI();
     connect(connectButton,SIGNAL(clicked()),this,SLOT(connectSlot()));
+    talkToServer();
 }
 
 MainWindow::~MainWindow()
@@ -24,7 +25,7 @@ void MainWindow::CreateGUI()
     QLabel *portLabel = new QLabel(tr("port:"),connectWidget);
     portSpin = new QSpinBox(connectWidget);
     portSpin->setMaximum(9999);
-    portSpin->setValue(8080);
+    portSpin->setValue(1234);
     connectButton = new QPushButton(tr("Connect"),connectWidget);
 
     QHBoxLayout *connectLayout = new QHBoxLayout(connectWidget);
@@ -37,7 +38,7 @@ void MainWindow::CreateGUI()
 
 
     optionsWidget = new QWidget(centralWidget);
-    QGridLayout *optionsLayout = new QGridLayout(optionsWidget);
+
     outText = new QTextEdit(centralWidget);
 
     mainLayout->addWidget(connectWidget,0,0,1,2);
@@ -50,7 +51,7 @@ void MainWindow::CreateGUI()
 
 }
 void MainWindow::connectSlot() {
-  //try{
+  try{
     if(!connected) {
         connectButton->setText(tr("Disconnect"));
         hostEdit->setDisabled(true);
@@ -61,22 +62,46 @@ void MainWindow::connectSlot() {
         std::string port;
         new_port>> port;
 
-       // c = Client::getInstance(hostEdit->text().toStdString(),port);
+        c = Client::getInstance(hostEdit->text().toStdString(),port);
+        c->setWindow(this);
         connected=true;
+
+        std::string tmp= "test";
+
+        c->send(tmp);
+        c->send(tmp);
+        c->send(tmp);
+        c->send(tmp);
+        c->send(tmp);
 
     }
     else {
         connectButton->setText(tr("Connect"));
         hostEdit->setDisabled(false);
         portSpin->setDisabled(false);
-        //c->close();
+        c->close();
         connected=false;
     }
-    //catch (std::exception& e)
-    //{
-    //  std::cerr << "Exception: " << e.what() << "\n";
-    //  outText->setText(e.what());
-    //}
-  //}
+ }
+    catch (std::exception& e)
+    {
+      std::cerr << "Exception: " << e.what() << "\n";
+      outText->setText(e.what());
+    }
+
 }
 
+void MainWindow::talkToServer() {
+    QGridLayout *optionsLayout = new QGridLayout(optionsWidget);
+    QPushButton *talkButton = new QPushButton(tr("Talk"),optionsWidget);
+    QTextEdit *textEdit = new QTextEdit(optionsWidget);
+    optionsLayout->addWidget(talkButton);
+    optionsWidget->setLayout(optionsLayout);
+
+}
+
+void MainWindow::receiveMessage(const std::string in) {
+    QString tmp;
+
+    outText->append(in.c_str());
+}
