@@ -3,7 +3,6 @@
 #include "Message.hpp"
 #include "Session.hpp"
 #include "Server.hpp"
-#include "Client.hpp"
 #include "Worker.hpp"
 #include <cstdlib>
 #include <iostream>

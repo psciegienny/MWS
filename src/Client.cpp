@@ -3,9 +3,9 @@
   bool Client::is= false;
   Client* Client::_instance;
 
-    //void setWindow(MainWindow* w){
-    //    _window=w;
-    //}
+    void Client::setWindow(MainWindow* w){
+        _window=w;
+    }
   Client* Client::getInstance(std::string host, std::string port){
       if(!is){
           _instance=new Client(*SocketSingleton::get(), host.c_str(), port.c_str());
@@ -82,7 +82,7 @@
   void Client::handle_read_body(const boost::system::error_code& error){
       if (!error){
 
-        //_window->receiveMessage(std::string(_read_msg.body()));
+        _window->receiveMessage(std::string(_read_msg.body()));
 
       std::cout.write(_read_msg.body(), _read_msg.body_length());
       std::cout << "\n";

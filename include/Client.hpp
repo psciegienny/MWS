@@ -23,9 +23,7 @@ class MainWindow;
 //class MainWindow;
 class Client{
 public:
-    void setWindow(MainWindow* w){
-        _window=w;
-    }
+    void setWindow(MainWindow* w);
   static Client* getInstance(std::string host="localhost", std::string port="1234");
   ///@brief metoda zamykająca połączenie
   ///@detail metoda binduje handler do_close z metodą post socketu

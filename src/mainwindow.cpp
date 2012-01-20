@@ -94,7 +94,7 @@ void MainWindow::connectSlot() {
 void MainWindow::talkToServer() {
     QGridLayout *optionsLayout = new QGridLayout(optionsWidget);
     QPushButton *talkButton = new QPushButton(tr("Talk"),optionsWidget);
-    QTextEdit *textEdit = new QTextEdit(optionsWidget);
+    //outText = new QTextEdit(optionsWidget);
     optionsLayout->addWidget(talkButton);
     optionsWidget->setLayout(optionsLayout);
 
@@ -103,5 +103,5 @@ void MainWindow::talkToServer() {
 void MainWindow::receiveMessage(const std::string in) {
     QString tmp;
 
-    outText->append(in.c_str());
+    outText->append(QString(in.c_str()));
 }
