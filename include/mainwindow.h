@@ -8,6 +8,7 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QPlainTextEdit>
 
 #include <cstdlib>
 #include <iostream>
@@ -29,6 +30,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void talkSlot();
     void connectSlot();
 private:
     //GUI
@@ -36,8 +38,10 @@ private:
     void talkToServer();
     QWidget *connectWidget;
     QWidget *optionsWidget;
-    QTextEdit *outText;
+    QPlainTextEdit *outText;
     QPushButton *connectButton;
+    QPushButton *talkButton;
+    QLineEdit *inText;
     QSpinBox *portSpin;
     QLineEdit *hostEdit;
     bool connected;

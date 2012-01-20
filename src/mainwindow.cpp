@@ -4,8 +4,11 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     CreateGUI();
-    connect(connectButton,SIGNAL(clicked()),this,SLOT(connectSlot()));
     talkToServer();
+    connect(connectButton,SIGNAL(clicked()),this,SLOT(connectSlot()));
+    connect(talkButton,SIGNAL(clicked()),this,SLOT(talkSlot()));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -39,8 +42,7 @@ void MainWindow::CreateGUI()
 
     optionsWidget = new QWidget(centralWidget);
 
-    outText = new QTextEdit(centralWidget);
-
+    outText = new QPlainTextEdit(centralWidget);
     mainLayout->addWidget(connectWidget,0,0,1,2);
     mainLayout->addWidget(optionsWidget,1,0,1,1);
     mainLayout->addWidget(outText,1,1,1,1);
@@ -64,15 +66,9 @@ void MainWindow::connectSlot() {
 
         c = Client::getInstance(hostEdit->text().toStdString(),port);
         c->setWindow(this);
+        std::string tmp="Welcome";
+        c->send(tmp);
         connected=true;
-
-        std::string tmp= "test";
-
-        c->send(tmp);
-        c->send(tmp);
-        c->send(tmp);
-        c->send(tmp);
-        c->send(tmp);
 
     }
     else {
@@ -86,22 +82,33 @@ void MainWindow::connectSlot() {
     catch (std::exception& e)
     {
       std::cerr << "Exception: " << e.what() << "\n";
-      outText->setText(e.what());
+      outText->appendPlainText(e.what());
     }
 
 }
 
 void MainWindow::talkToServer() {
     QGridLayout *optionsLayout = new QGridLayout(optionsWidget);
-    QPushButton *talkButton = new QPushButton(tr("Talk"),optionsWidget);
-    //outText = new QTextEdit(optionsWidget);
+    talkButton = new QPushButton(tr("Talk"),optionsWidget);
+    inText = new QLineEdit(optionsWidget);
     optionsLayout->addWidget(talkButton);
     optionsWidget->setLayout(optionsLayout);
+    if(!connected) {
+        inText->setDisabled(true);
+        talkButton->setDisabled(true);
+    }
+
 
 }
 
 void MainWindow::receiveMessage(const std::string in) {
-    QString tmp;
+        if(connected) {
+            inText->setDisabled(false);
+            talkButton->setDisabled(false);
+        }
+    outText->appendPlainText(QString(in.c_str()));
+}
+void MainWindow::talkSlot(){
 
-    outText->append(QString(in.c_str()));
+    c->send(inText->text().toStdString());
 }
